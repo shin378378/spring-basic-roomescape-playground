@@ -17,13 +17,24 @@ public class LoginService {
     @Autowired
     private MemberDao memberDao;
 
+//    public String authenticate(String email, String password) {
+//        Member member = memberDao.findByEmailAndPassword(email, password);
+//        if (member == null) {
+//            throw new IllegalArgumentException("Invalid email or password");
+//        }
+//        return jwtUtil.generateToken(member.getId());
+//    }
+
     public String authenticate(String email, String password) {
         Member member = memberDao.findByEmailAndPassword(email, password);
         if (member == null) {
             throw new IllegalArgumentException("Invalid email or password");
         }
-        return jwtUtil.generateToken(member.getId());
+
+        String role = member.getRole(); // 사용자의 역할 가져오기
+        return jwtUtil.generateToken(member.getId(), role); // 역할 포함
     }
+
 
     public Cookie createAuthCookie(String token) {
         Cookie cookie = new Cookie("token", token);
