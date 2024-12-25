@@ -12,6 +12,7 @@ import java.net.URI;
 import java.util.List;
 
 @RestController
+@RequestMapping("/reservations")
 public class ReservationController {
     @Autowired
     private JwtUtil jwtUtil;
@@ -24,12 +25,12 @@ public class ReservationController {
         this.reservationService = reservationService;
     }
 
-    @GetMapping("/reservations")
+    @GetMapping
     public List<ReservationResponse> list() {
         return reservationService.findAll();
     }
 
-    @PostMapping("/reservations")
+    @PostMapping
     public ResponseEntity create(@CookieValue(name = "token", required = true) String token, @RequestBody ReservationRequest reservationRequest) {
         if (reservationRequest.getDate() == null
                 || reservationRequest.getTheme() == null
@@ -51,7 +52,7 @@ public class ReservationController {
     }
 
 
-    @DeleteMapping("/reservations/{id}")
+    @DeleteMapping("/{id}")
     public ResponseEntity delete(@PathVariable Long id) {
         reservationService.deleteById(id);
         return ResponseEntity.noContent().build();
