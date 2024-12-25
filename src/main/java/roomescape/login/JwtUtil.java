@@ -30,7 +30,7 @@ public class JwtUtil {
     public String generateToken(Long userId, String role) {
         return Jwts.builder()
                 .setSubject(String.valueOf(userId))
-                .claim("role", role) // 역할 정보 추가
+                .claim("role", role)
                 .setIssuedAt(new Date())
                 .setExpiration(new Date(System.currentTimeMillis() + EXPIRATION_TIME))
                 .signWith(key, SignatureAlgorithm.HS256)

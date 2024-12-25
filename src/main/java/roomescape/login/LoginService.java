@@ -11,19 +11,10 @@ import java.util.Map;
 
 @Service
 public class LoginService {
-
     @Autowired
     private JwtUtil jwtUtil;
     @Autowired
     private MemberDao memberDao;
-
-//    public String authenticate(String email, String password) {
-//        Member member = memberDao.findByEmailAndPassword(email, password);
-//        if (member == null) {
-//            throw new IllegalArgumentException("Invalid email or password");
-//        }
-//        return jwtUtil.generateToken(member.getId());
-//    }
 
     public String authenticate(String email, String password) {
         Member member = memberDao.findByEmailAndPassword(email, password);
@@ -31,10 +22,9 @@ public class LoginService {
             throw new IllegalArgumentException("Invalid email or password");
         }
 
-        String role = member.getRole(); // 사용자의 역할 가져오기
-        return jwtUtil.generateToken(member.getId(), role); // 역할 포함
+        String role = member.getRole();
+        return jwtUtil.generateToken(member.getId(), role);
     }
-
 
     public Cookie createAuthCookie(String token) {
         Cookie cookie = new Cookie("token", token);

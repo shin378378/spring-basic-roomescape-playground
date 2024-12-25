@@ -1,5 +1,6 @@
 package roomescape.login;
 
+import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -10,10 +11,8 @@ import roomescape.member.MemberDao;
 
 @Component
 public class AdminInterceptor implements HandlerInterceptor {
-
     @Autowired
     private MemberDao memberDao;
-
     @Autowired
     private JwtUtil jwtUtil;
 
@@ -25,35 +24,33 @@ public class AdminInterceptor implements HandlerInterceptor {
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws Exception {
         String token = null;
 
-        if (request.getCookies() != null) {
-            for (var cookie : request.getCookies()) {
-                if ("token".equals(cookie.getName())) {
-                    token = cookie.getValue();
-                    break;
-                }
-            }
-        }
+        Cookie[] cookies = request.getCookies();
+        token = extractTokenFromCookies(cookies);
 
         if (token == null) {
             response.setStatus(401);
             return false;
         }
 
-        try {
-            Long userId = jwtUtil.getUserIdFromToken(token);
-            Member member = memberDao.findById(userId);
+        Long userId = jwtUtil.getUserIdFromToken(token);
+        Member member = memberDao.findById(userId);
 
-            if (member == null || !"ADMIN".equals(member.getRole())) {
-                response.setStatus(401);
-                return false;
-            }
-        } catch (Exception e) {
-            response.setStatus(401); // 예외 발생 시 Unauthorized
+        if (member == null || !"ADMIN".equals(member.getRole())) {
+            response.setStatus(401);
             return false;
         }
 
         return true;
     }
 
-
+    private String extractTokenFromCookies(Cookie[] cookies) {
+        if (cookies != null) {
+            for (Cookie cookie : cookies) {
+                if ("token".equals(cookie.getName())) {
+                    return cookie.getValue();
+                }
+            }
+        }
+        return null;
+    }
 }
