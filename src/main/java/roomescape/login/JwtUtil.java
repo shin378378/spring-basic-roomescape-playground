@@ -26,7 +26,6 @@ public class JwtUtil {
         key = new SecretKeySpec(secretKey.getBytes(), SignatureAlgorithm.HS256.getJcaName());
     }
 
-    // userId를 기반으로 JWT 생성
     public String generateToken(Long userId) {
         return Jwts.builder()
                 .setSubject(String.valueOf(userId))

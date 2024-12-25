@@ -1,4 +1,41 @@
 package roomescape.login;
 
+import jakarta.servlet.http.Cookie;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+import roomescape.member.Member;
+import roomescape.member.MemberDao;
+
+import java.util.HashMap;
+import java.util.Map;
+
+@Service
 public class LoginService {
+
+    @Autowired
+    private JwtUtil jwtUtil;
+    @Autowired
+    private MemberDao memberDao;
+
+    public String authenticate(String email, String password) {
+        Member member = memberDao.findByEmailAndPassword(email, password);
+        if (member == null) {
+            throw new IllegalArgumentException("Invalid email or password");
+        }
+        return jwtUtil.generateToken(member.getId());
+    }
+
+    public Cookie createAuthCookie(String token) {
+        Cookie cookie = new Cookie("token", token);
+        cookie.setHttpOnly(true);
+        cookie.setPath("/");
+        return cookie;
+    }
+
+    public Map<String, Object> createLoginResponse(String token) {
+        Map<String, Object> responseBody = new HashMap<>();
+        responseBody.put("token", token);
+        responseBody.put("message", "Login successful");
+        return responseBody;
+    }
 }
