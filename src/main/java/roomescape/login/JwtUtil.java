@@ -50,12 +50,4 @@ public class JwtUtil {
             throw new IllegalArgumentException("유효하지 않은 토큰입니다.", e);
         }
     }
-
-    public Claims getClaimsFromToken(String token) {
-        return Jwts.parserBuilder()
-                .setSigningKey(key)
-                .build()
-                .parseClaimsJws(token)
-                .getBody();
-    }
 }
