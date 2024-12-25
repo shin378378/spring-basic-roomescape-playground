@@ -29,20 +29,24 @@ public class JwtUtil {
     // userId를 기반으로 JWT 생성
     public String generateToken(Long userId) {
         return Jwts.builder()
-                .setSubject(String.valueOf(userId)) // userId를 주제(subject)로 설정
+                .setSubject(String.valueOf(userId))
                 .setIssuedAt(new Date())
                 .setExpiration(new Date(System.currentTimeMillis() + EXPIRATION_TIME))
-                .signWith(key, SignatureAlgorithm.HS256) // 서명 알고리즘과 비밀 키 설정
+                .signWith(key, SignatureAlgorithm.HS256)
                 .compact();
     }
 
-//    // 토큰에서 userId 추출
-//    public Long getUserIdFromToken(String token) {
-//        return Long.parseLong(Jwts.parserBuilder()
-//                .setSigningKey(key)
-//                .build()
-//                .parseClaimsJws(token)
-//                .getBody()
-//                .getSubject());
-//    }
+    public Long getUserIdFromToken(String token) {
+        try {
+            String subject = Jwts.parserBuilder()
+                    .setSigningKey(key)
+                    .build()
+                    .parseClaimsJws(token)
+                    .getBody()
+                    .getSubject();
+            return Long.valueOf(subject);
+        } catch (Exception e) {
+            throw new IllegalArgumentException("유효하지 않은 토큰입니다.", e);
+        }
+    }
 }

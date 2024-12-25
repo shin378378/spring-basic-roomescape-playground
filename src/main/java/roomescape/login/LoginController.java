@@ -1,14 +1,13 @@
 package roomescape.login;
 
-import com.fasterxml.jackson.databind.JsonNode;
+import jakarta.servlet.http.Cookie;
+import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-
-import jakarta.servlet.http.Cookie;
-import jakarta.servlet.http.HttpServletResponse;
 import roomescape.member.Member;
 import roomescape.member.MemberDao;
 
@@ -27,35 +26,32 @@ public class LoginController {
     public ResponseEntity<Map<String, Object>> login(@RequestBody LoginRequestDto loginRequestDto, HttpServletResponse response) {
         String email = loginRequestDto.getEmail();
         String password = loginRequestDto.getPassword();
+        try {
+            Member member = memberDao.findByEmailAndPassword(email, password);
 
-        // 데이터베이스에서 사용자 조회
-        Member member = memberDao.findByEmailAndPassword(email, password);
+            if (member != null) {
+                String token = jwtUtil.generateToken(member.getId());
 
-        if (member != null) {
-            // JWT 토큰 생성
-            String token = jwtUtil.generateToken(member.getId());
+                Cookie cookie = new Cookie("token", token);
+                cookie.setHttpOnly(true);
+                cookie.setPath("/");
+                response.addCookie(cookie);
 
-            // Cookie에 토큰 추가
-            Cookie cookie = new Cookie("token", token);
-            cookie.setHttpOnly(true);
-            cookie.setPath("/");
-            response.addCookie(cookie);
+                response.setHeader(HttpHeaders.CONTENT_TYPE, "application/json");
+                response.setHeader(HttpHeaders.CONNECTION, "Keep-Alive");
+                response.setHeader("Keep-Alive", "timeout=60");
 
-            System.out.println(member.getName());
+                Map<String, Object> responseBody = new HashMap<>();
+                responseBody.put("token", token);
+                responseBody.put("message", "Login successful");
 
-            // 헤더 설정
-            response.setHeader(HttpHeaders.CONTENT_TYPE, "application/json");
-            response.setHeader(HttpHeaders.CONNECTION, "Keep-Alive");
-            response.setHeader("Keep-Alive", "timeout=60");
-
-            // 응답 본문에 토큰 추가
-            Map<String, Object> responseBody = new HashMap<>();
-            responseBody.put("token", token);
-            responseBody.put("message", "Login successful");
-
-            return ResponseEntity.ok(responseBody);
+                return ResponseEntity.ok(responseBody);
+            }
+        } catch (EmptyResultDataAccessException e) {
+            Map<String, Object> errorResponse = new HashMap<>();
+            errorResponse.put("message", "Invalid email or password");
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(errorResponse);
         }
-        // 인증 실패 메시지 포함
         Map<String, Object> errorResponse = new HashMap<>();
         errorResponse.put("message", "Invalid email or password");
 
@@ -69,16 +65,15 @@ public class LoginController {
         }
 
         try {
-            // JWT 토큰에서 사용자 ID 추출
             Long userId = jwtUtil.getUserIdFromToken(token);
+            Member member = memberDao.findById(userId);
 
-            // 데이터베이스에서 사용자 조회
-            Member member = memberDao.findByName(userId.toString());
+            if (member == null) {
+                return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
+            }
 
-            // 응답 데이터 생성
             Map<String, String> response = new HashMap<>();
             response.put("name", member.getName());
-            response.put("role", member.getRole());
 
             return ResponseEntity.ok(response);
         } catch (Exception e) {
