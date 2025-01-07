@@ -9,6 +9,8 @@ import roomescape.jwt.JwtService;
 import roomescape.member.Member;
 import roomescape.member.MemberDao;
 
+import java.util.Arrays;
+
 @Component
 public class AdminInterceptor implements HandlerInterceptor {
     private MemberDao memberDao;
@@ -43,13 +45,14 @@ public class AdminInterceptor implements HandlerInterceptor {
     }
 
     private String extractTokenFromCookies(Cookie[] cookies) {
-        if (cookies != null) {
-            for (Cookie cookie : cookies) {
-                if ("token".equals(cookie.getName())) {
-                    return cookie.getValue();
-                }
-            }
+        if (cookies == null) {
+            return null;
         }
-        return null;
+
+        return Arrays.stream(cookies)
+                .filter(cookie -> "token".equals(cookie.getName()))
+                .map(Cookie::getValue)
+                .findFirst()
+                .orElse(null);
     }
 }
