@@ -35,12 +35,7 @@ public class LoginController {
 
     @GetMapping("/check")
     public ResponseEntity<Map<String, String>> checkLogin(@CookieValue(name = "token", required = true) String token) {
-        Long userId = jwtService.getUserIdFromToken(token);
-        Member member = memberDao.findById(userId);
-
-        if (member == null) {
-            throw new IllegalArgumentException("유효하지 않은 사용자입니다.");
-        }
+        Member member = loginService.validateUserFromToken(token);
 
         Map<String, String> response = new HashMap<>();
         response.put("name", member.getName());
