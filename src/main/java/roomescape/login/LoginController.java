@@ -14,13 +14,9 @@ import java.util.Map;
 @RestController
 @RequestMapping("/login")
 public class LoginController {
-    private JwtService jwtService;
-    private MemberDao memberDao;
     private LoginService loginService;
 
-    public LoginController(JwtService jwtService, MemberDao memberDao, LoginService loginService) {
-        this.jwtService = jwtService;
-        this.memberDao = memberDao;
+    public LoginController(LoginService loginService) {
         this.loginService = loginService;
     }
 
