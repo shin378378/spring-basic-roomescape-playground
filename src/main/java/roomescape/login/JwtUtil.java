@@ -1,6 +1,5 @@
 package roomescape.login;
 
-import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
 import jakarta.annotation.PostConstruct;
@@ -21,9 +20,6 @@ public class JwtUtil {
 
     @PostConstruct
     public void init() {
-        if (secretKey == null) {
-            throw new IllegalStateException("SECRET_KEY가 초기화되지 않았습니다.");
-        }
         key = new SecretKeySpec(secretKey.getBytes(), SignatureAlgorithm.HS256.getJcaName());
     }
 
