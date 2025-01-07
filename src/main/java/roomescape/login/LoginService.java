@@ -1,7 +1,6 @@
 package roomescape.login;
 
 import jakarta.servlet.http.Cookie;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import roomescape.jwt.JwtUtil;
 import roomescape.member.Member;
@@ -12,10 +11,13 @@ import java.util.Map;
 
 @Service
 public class LoginService {
-    @Autowired
     private JwtUtil jwtUtil;
-    @Autowired
     private MemberDao memberDao;
+
+    public LoginService(JwtUtil jwtUtil, MemberDao memberDao) {
+        this.jwtUtil = jwtUtil;
+        this.memberDao = memberDao;
+    }
 
     public String authenticate(String email, String password) {
         Member member = memberDao.findByEmailAndPassword(email, password);

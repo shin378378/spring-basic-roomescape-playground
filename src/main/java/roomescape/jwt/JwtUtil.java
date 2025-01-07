@@ -12,10 +12,9 @@ import java.util.Date;
 
 @Component
 public class JwtUtil {
+    private static final long EXPIRATION_TIME = 86400000;
     @Value("${jwt.secret}")
     private String secretKey;
-
-    private static final long EXPIRATION_TIME = 86400000;
 
     private Key generateKey() {
         return new SecretKeySpec(secretKey.getBytes(), SignatureAlgorithm.HS256.getJcaName());

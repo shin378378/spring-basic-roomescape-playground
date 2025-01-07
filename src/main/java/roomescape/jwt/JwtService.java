@@ -1,13 +1,15 @@
 package roomescape.jwt;
 
 import io.jsonwebtoken.Claims;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 @Service
 public class JwtService {
-    @Autowired
     private JwtUtil jwtUtil;
+
+    public JwtService(JwtUtil jwtUtil) {
+        this.jwtUtil = jwtUtil;
+    }
 
     public Long getUserIdFromToken(String token) {
         Claims claims = jwtUtil.getClaimsFromToken(token);

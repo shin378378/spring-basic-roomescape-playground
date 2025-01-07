@@ -5,9 +5,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import roomescape.jwt.JwtService;
-import roomescape.jwt.JwtUtil;
-import roomescape.member.MemberDao;
 import roomescape.member.Member;
+import roomescape.member.MemberDao;
 
 import java.net.URI;
 import java.util.List;
@@ -15,12 +14,11 @@ import java.util.List;
 @RestController
 @RequestMapping("/reservations")
 public class ReservationController {
+    private final ReservationService reservationService;
     @Autowired
     private JwtService jwtService;
     @Autowired
     private MemberDao memberDao;
-
-    private final ReservationService reservationService;
 
     public ReservationController(ReservationService reservationService) {
         this.reservationService = reservationService;
@@ -40,12 +38,12 @@ public class ReservationController {
         }
 
         if (reservationRequest.getName() == null) {
-                Long userId = jwtService.getUserIdFromToken(token);
-                Member member = memberDao.findById(userId);
-                if (member == null) {
-                    return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
-                }
-                reservationRequest.setName(member.getName());
+            Long userId = jwtService.getUserIdFromToken(token);
+            Member member = memberDao.findById(userId);
+            if (member == null) {
+                return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
+            }
+            reservationRequest.setName(member.getName());
         }
 
         ReservationResponse reservation = reservationService.save(reservationRequest);

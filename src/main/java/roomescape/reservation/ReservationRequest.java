@@ -10,6 +10,10 @@ public class ReservationRequest {
         return name;
     }
 
+    public void setName(String name) {
+        this.name = name;
+    }
+
     public String getDate() {
         return date;
     }
@@ -20,9 +24,5 @@ public class ReservationRequest {
 
     public Long getTime() {
         return time;
-    }
-
-    public void setName(String name) {
-        this.name = name;
     }
 }
