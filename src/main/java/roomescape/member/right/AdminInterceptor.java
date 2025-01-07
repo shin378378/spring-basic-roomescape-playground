@@ -6,7 +6,8 @@ import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.web.servlet.HandlerInterceptor;
-import roomescape.login.JwtUtil;
+import roomescape.jwt.JwtService;
+import roomescape.jwt.JwtUtil;
 import roomescape.member.Member;
 import roomescape.member.MemberDao;
 
@@ -14,6 +15,8 @@ import roomescape.member.MemberDao;
 public class AdminInterceptor implements HandlerInterceptor {
     @Autowired
     private MemberDao memberDao;
+    @Autowired
+    private JwtService jwtService;
     @Autowired
     private JwtUtil jwtUtil;
 
@@ -33,7 +36,7 @@ public class AdminInterceptor implements HandlerInterceptor {
             return false;
         }
 
-        Long userId = jwtUtil.getUserIdFromToken(token);
+        Long userId = jwtService.getUserIdFromToken(token);
         Member member = memberDao.findById(userId);
 
         if (member == null || !"ADMIN".equals(member.getRole())) {

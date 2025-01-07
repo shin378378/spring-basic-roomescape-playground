@@ -1,5 +1,6 @@
-package roomescape.login;
+package roomescape.jwt;
 
+import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
 import org.springframework.beans.factory.annotation.Value;
@@ -31,16 +32,14 @@ public class JwtUtil {
                 .compact();
     }
 
-    public Long getUserIdFromToken(String token) {
+    public Claims getClaimsFromToken(String token) {
         try {
             Key key = generateKey();
-            String subject = Jwts.parserBuilder()
+            return Jwts.parserBuilder()
                     .setSigningKey(key)
                     .build()
                     .parseClaimsJws(token)
-                    .getBody()
-                    .getSubject();
-            return Long.valueOf(subject);
+                    .getBody();
         } catch (Exception e) {
             throw new IllegalArgumentException("유효하지 않은 토큰입니다.", e);
         }

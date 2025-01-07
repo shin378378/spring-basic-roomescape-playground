@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import roomescape.jwt.JwtService;
 import roomescape.member.Member;
 import roomescape.member.MemberDao;
 
@@ -16,7 +17,7 @@ import java.util.Map;
 @RequestMapping("/login")
 public class LoginController {
     @Autowired
-    private JwtUtil jwtUtil;
+    private JwtService jwtService;
     @Autowired
     private MemberDao memberDao;
     @Autowired
@@ -42,7 +43,7 @@ public class LoginController {
     @GetMapping("/check")
     public ResponseEntity<Map<String, String>> checkLogin(@CookieValue(name = "token", required = true) String token) {
         try {
-            Long userId = jwtUtil.getUserIdFromToken(token);
+            Long userId = jwtService.getUserIdFromToken(token);
             Member member = memberDao.findById(userId);
 
             if (member == null) {

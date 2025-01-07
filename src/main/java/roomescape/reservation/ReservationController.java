@@ -4,7 +4,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import roomescape.login.JwtUtil;
+import roomescape.jwt.JwtService;
+import roomescape.jwt.JwtUtil;
 import roomescape.member.MemberDao;
 import roomescape.member.Member;
 
@@ -16,6 +17,8 @@ import java.util.List;
 public class ReservationController {
     @Autowired
     private JwtUtil jwtUtil;
+    @Autowired
+    private JwtService jwtService;
     @Autowired
     private MemberDao memberDao;
 
@@ -39,7 +42,7 @@ public class ReservationController {
         }
 
         if (reservationRequest.getName() == null) {
-                Long userId = jwtUtil.getUserIdFromToken(token);
+                Long userId = jwtService.getUserIdFromToken(token);
                 Member member = memberDao.findById(userId);
                 if (member == null) {
                     return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();

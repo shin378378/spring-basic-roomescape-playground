@@ -3,6 +3,7 @@ package roomescape.login;
 import jakarta.servlet.http.Cookie;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import roomescape.jwt.JwtUtil;
 import roomescape.member.Member;
 import roomescape.member.MemberDao;
 
