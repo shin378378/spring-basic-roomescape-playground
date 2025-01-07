@@ -1,12 +1,9 @@
 package roomescape.reservation;
 
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import roomescape.jwt.JwtService;
+import roomescape.auth.Authentication;
 import roomescape.member.Member;
-import roomescape.member.MemberDao;
 
 import java.net.URI;
 import java.util.List;
@@ -15,10 +12,6 @@ import java.util.List;
 @RequestMapping("/reservations")
 public class ReservationController {
     private final ReservationService reservationService;
-    @Autowired
-    private JwtService jwtService;
-    @Autowired
-    private MemberDao memberDao;
 
     public ReservationController(ReservationService reservationService) {
         this.reservationService = reservationService;
@@ -30,26 +23,14 @@ public class ReservationController {
     }
 
     @PostMapping
-    public ResponseEntity create(@CookieValue(name = "token", required = true) String token, @RequestBody ReservationRequest reservationRequest) {
-        if (reservationRequest.getDate() == null
-                || reservationRequest.getTheme() == null
-                || reservationRequest.getTime() == null) {
-            return ResponseEntity.badRequest().build();
-        }
-
+    public ResponseEntity create(@Authentication Member member,
+                                 @RequestBody ReservationRequest reservationRequest) {
         if (reservationRequest.getName() == null) {
-            Long userId = jwtService.getUserIdFromToken(token);
-            Member member = memberDao.findById(userId);
-            if (member == null) {
-                return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
-            }
             reservationRequest.setName(member.getName());
         }
-
         ReservationResponse reservation = reservationService.save(reservationRequest);
         return ResponseEntity.created(URI.create("/reservations/" + reservation.getId())).body(reservation);
     }
-
 
     @DeleteMapping("/{id}")
     public ResponseEntity delete(@PathVariable Long id) {
