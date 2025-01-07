@@ -16,8 +16,6 @@ import java.util.List;
 @RequestMapping("/reservations")
 public class ReservationController {
     @Autowired
-    private JwtUtil jwtUtil;
-    @Autowired
     private JwtService jwtService;
     @Autowired
     private MemberDao memberDao;
