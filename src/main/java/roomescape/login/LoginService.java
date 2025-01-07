@@ -2,7 +2,6 @@ package roomescape.login;
 
 import jakarta.servlet.http.Cookie;
 import org.springframework.stereotype.Service;
-import roomescape.jwt.JwtService;
 import roomescape.jwt.JwtUtil;
 import roomescape.member.Member;
 import roomescape.member.MemberDao;
@@ -12,13 +11,11 @@ import java.util.Map;
 
 @Service
 public class LoginService {
-    private JwtUtil jwtUtil;
-    private JwtService jwtService;
-    private MemberDao memberDao;
+    private final JwtUtil jwtUtil;
+    private final MemberDao memberDao;
 
-    public LoginService(JwtUtil jwtUtil, JwtService jwtService, MemberDao memberDao) {
+    public LoginService(JwtUtil jwtUtil, MemberDao memberDao) {
         this.jwtUtil = jwtUtil;
-        this.jwtService = jwtService;
         this.memberDao = memberDao;
     }
 
@@ -28,8 +25,7 @@ public class LoginService {
             throw new IllegalArgumentException("Invalid email or password");
         }
 
-        String role = member.getRole();
-        return jwtUtil.generateToken(member.getId(), role);
+        return jwtUtil.generateToken(member.getId(), member.getRole());
     }
 
     public Cookie createAuthCookie(String token) {
@@ -44,16 +40,5 @@ public class LoginService {
         responseBody.put("token", token);
         responseBody.put("message", "Login successful");
         return responseBody;
-    }
-
-    public Member validateUserFromToken(String token) {
-        Long userId = jwtService.getUserIdFromToken(token);
-        Member member = memberDao.findById(userId);
-
-        if (member == null) {
-            throw new IllegalArgumentException("유효하지 않은 사용자입니다.");
-        }
-
-        return member;
     }
 }

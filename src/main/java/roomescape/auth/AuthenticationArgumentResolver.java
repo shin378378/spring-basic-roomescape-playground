@@ -9,9 +9,7 @@ import org.springframework.web.method.support.HandlerMethodArgumentResolver;
 import org.springframework.web.method.support.ModelAndViewContainer;
 import roomescape.jwt.JwtService;
 import roomescape.member.Member;
-
-import java.util.Arrays;
-import java.util.Optional;
+import roomescape.util.CookieUtil;
 
 @Component
 public class AuthenticationArgumentResolver implements HandlerMethodArgumentResolver {
@@ -31,22 +29,9 @@ public class AuthenticationArgumentResolver implements HandlerMethodArgumentReso
                                   NativeWebRequest webRequest,
                                   WebDataBinderFactory binderFactory) {
 
-        String token = extractTokenFromCookies(webRequest)
+        String token = CookieUtil.extractTokenFromHeader(webRequest)
                 .orElseThrow(() -> new IllegalArgumentException("토큰이 존재하지 않습니다. 로그인이 필요합니다."));
 
         return jwtService.getMemberFromToken(token);
-    }
-
-    private Optional<String> extractTokenFromCookies(NativeWebRequest webRequest) {
-        String cookieHeader = webRequest.getHeader("Cookie");
-        if (cookieHeader == null) {
-            return Optional.empty();
-        }
-
-        return Arrays.stream(cookieHeader.split(";"))
-                .map(String::trim)
-                .filter(cookie -> cookie.startsWith("token="))
-                .map(cookie -> cookie.substring("token=".length()))
-                .findFirst();
     }
 }

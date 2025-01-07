@@ -15,9 +15,11 @@ import java.util.Map;
 @RequestMapping("/login")
 public class LoginController {
     private LoginService loginService;
+    private JwtService jwtService;
 
-    public LoginController(LoginService loginService) {
+    public LoginController(LoginService loginService, JwtService jwtService) {
         this.loginService = loginService;
+        this.jwtService = jwtService;
     }
 
     @PostMapping
@@ -31,7 +33,7 @@ public class LoginController {
 
     @GetMapping("/check")
     public ResponseEntity<Map<String, String>> checkLogin(@CookieValue(name = "token", required = true) String token) {
-        Member member = loginService.validateUserFromToken(token);
+        Member member = jwtService.getMemberFromToken(token);
 
         Map<String, String> response = new HashMap<>();
         response.put("name", member.getName());
