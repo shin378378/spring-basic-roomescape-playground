@@ -2,7 +2,6 @@ package roomescape.login;
 
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
-import jakarta.annotation.PostConstruct;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
@@ -15,15 +14,14 @@ public class JwtUtil {
     @Value("${jwt.secret}")
     private String secretKey;
 
-    private Key key;
     private static final long EXPIRATION_TIME = 86400000;
 
-    @PostConstruct
-    public void init() {
-        key = new SecretKeySpec(secretKey.getBytes(), SignatureAlgorithm.HS256.getJcaName());
+    private Key generateKey() {
+        return new SecretKeySpec(secretKey.getBytes(), SignatureAlgorithm.HS256.getJcaName());
     }
 
     public String generateToken(Long userId, String role) {
+        Key key = generateKey();
         return Jwts.builder()
                 .setSubject(String.valueOf(userId))
                 .claim("role", role)
@@ -35,6 +33,7 @@ public class JwtUtil {
 
     public Long getUserIdFromToken(String token) {
         try {
+            Key key = generateKey();
             String subject = Jwts.parserBuilder()
                     .setSigningKey(key)
                     .build()
