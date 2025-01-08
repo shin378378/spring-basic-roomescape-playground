@@ -4,7 +4,7 @@ import jakarta.servlet.http.Cookie;
 import org.springframework.stereotype.Service;
 import roomescape.jwt.JwtUtil;
 import roomescape.member.Member;
-import roomescape.member.MemberDao;
+import roomescape.member.MemberRepository;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -12,15 +12,15 @@ import java.util.Map;
 @Service
 public class LoginService {
     private final JwtUtil jwtUtil;
-    private final MemberDao memberDao;
+    private final MemberRepository memberRepository;
 
-    public LoginService(JwtUtil jwtUtil, MemberDao memberDao) {
+    public LoginService(JwtUtil jwtUtil, MemberRepository memberRepository) {
         this.jwtUtil = jwtUtil;
-        this.memberDao = memberDao;
+        this.memberRepository = memberRepository;
     }
 
     public String authenticate(String email, String password) {
-        Member member = memberDao.findByEmailAndPassword(email, password);
+        Member member = memberRepository.findByEmailAndPassword(email, password).get();
         if (member == null) {
             throw new IllegalArgumentException("Invalid email or password");
         }
