@@ -1,13 +1,25 @@
 package roomescape.reservation;
 
+import jakarta.persistence.*;
 import roomescape.theme.Theme;
 import roomescape.time.Time;
 
+
+@Entity
 public class Reservation {
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+
     private String name;
     private String date;
+
+    @ManyToOne(fetch = FetchType.LAZY) // Time 엔티티와 다대일 관계
+    @JoinColumn(name = "time_id", nullable = false) // 외래 키 매핑
     private Time time;
+
+    @ManyToOne(fetch = FetchType.LAZY) // Theme 엔티티와 다대일 관계
+    @JoinColumn(name = "theme_id", nullable = false) // 외래 키 매핑
     private Theme theme;
 
     public Reservation(Long id, String name, String date, Time time, Theme theme) {
