@@ -7,27 +7,28 @@ import java.net.URI;
 import java.util.List;
 
 @RestController
+@RequestMapping("/themes")
 public class ThemeController {
-    private ThemeDao themeDao;
+    private final ThemeRepository themeRepository;
 
-    public ThemeController(ThemeDao themeDao) {
-        this.themeDao = themeDao;
+    public ThemeController(ThemeRepository themeRepository) {
+        this.themeRepository = themeRepository;
     }
 
-    @PostMapping("/themes")
+    @PostMapping
     public ResponseEntity<Theme> createTheme(@RequestBody Theme theme) {
-        Theme newTheme = themeDao.save(theme);
+        Theme newTheme = themeRepository.save(theme);
         return ResponseEntity.created(URI.create("/themes/" + newTheme.getId())).body(newTheme);
     }
 
-    @GetMapping("/themes")
+    @GetMapping
     public ResponseEntity<List<Theme>> list() {
-        return ResponseEntity.ok(themeDao.findAll());
+        return ResponseEntity.ok(themeRepository.findAll());
     }
 
-    @DeleteMapping("/themes/{id}")
+    @DeleteMapping("/{id}")
     public ResponseEntity<Void> deleteTheme(@PathVariable Long id) {
-        themeDao.deleteById(id);
+        themeRepository.deleteById(id);
         return ResponseEntity.noContent().build();
     }
 }
