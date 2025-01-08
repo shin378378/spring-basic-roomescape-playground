@@ -11,6 +11,7 @@ public class Reservation {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    private Long memberId; // 사용자 ID 추가
     private String name;
     private String date;
 
@@ -22,15 +23,17 @@ public class Reservation {
     @JoinColumn(name = "theme_id")
     private Theme theme;
 
-    public Reservation(Long id, String name, String date, Time time, Theme theme) {
+    public Reservation(Long id, Long memberId, String name, String date, Time time, Theme theme) {
         this.id = id;
+        this.memberId = memberId;
         this.name = name;
         this.date = date;
         this.time = time;
         this.theme = theme;
     }
 
-    public Reservation(String name, String date, Time time, Theme theme) {
+    public Reservation(Long memberId, String name, String date, Time time, Theme theme) {
+        this.memberId = memberId;
         this.name = name;
         this.date = date;
         this.time = time;
