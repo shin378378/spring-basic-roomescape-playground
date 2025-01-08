@@ -18,6 +18,16 @@ public class MyReservationResponse {
         this.status = status;
     }
 
+    public static List<MyReservationResponse> from(List<ReservationResponse> reservations) {
+        return reservations.stream()
+                .map(it -> new MyReservationResponse(it.getId(),
+                        it.getTheme(),
+                        it.getDate(),
+                        it.getTime(),
+                        "예약"))
+                .collect(Collectors.toList());
+    }
+
     public String getTheme() {
         return theme;
     }
@@ -36,15 +46,5 @@ public class MyReservationResponse {
 
     public String getStatus() {
         return status;
-    }
-
-    public static List<MyReservationResponse> from(List<ReservationResponse> reservations) {
-        return reservations.stream()
-                .map(it -> new MyReservationResponse(it.getId(),
-                        it.getTheme(),
-                        it.getDate(),
-                        it.getTime(),
-                        "예약"))
-                .collect(Collectors.toList());
     }
 }

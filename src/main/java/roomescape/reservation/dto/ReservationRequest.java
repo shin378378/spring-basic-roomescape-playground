@@ -6,7 +6,7 @@ public class ReservationRequest {
     private Long theme;
     private Long time;
 
-    public ReservationRequest( String name, String date, Long theme, Long time) {
+    public ReservationRequest(String name, String date, Long theme, Long time) {
         this.name = name;
         this.date = date;
         this.theme = theme;
@@ -15,6 +15,10 @@ public class ReservationRequest {
 
     public String getName() {
         return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
     }
 
     public String getDate() {
@@ -27,9 +31,5 @@ public class ReservationRequest {
 
     public Long getTime() {
         return time;
-    }
-
-    public void setName(String name) {
-        this.name = name;
     }
 }
