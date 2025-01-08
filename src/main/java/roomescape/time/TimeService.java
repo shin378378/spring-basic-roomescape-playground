@@ -20,7 +20,7 @@ public class TimeService {
 
     public List<AvailableTime> getAvailableTime(String date, Long themeId) {
         List<Reservation> reservations = reservationRepository.findByDateAndThemeId(date, themeId);
-        List<Time> times = timeRepository.findAllNotDeleted();
+        List<Time> times = timeRepository.findAll();
 
         return times.stream()
                 .map(time -> new AvailableTime(
@@ -33,7 +33,7 @@ public class TimeService {
     }
 
     public List<Time> findAll() {
-        return timeRepository.findAllNotDeleted();
+        return timeRepository.findAll();
     }
 
     public Time save(Time time) {

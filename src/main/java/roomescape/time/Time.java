@@ -8,21 +8,19 @@ public class Time {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    private String time_value;
-
-    @Column(nullable = false)
-    private boolean deleted = false;
+    @Column(name = "time_value")
+    private String value;
 
     public Time() {
     }
 
     public Time(Long id, String value) {
         this.id = id;
-        this.time_value = value;
+        this.value = value;
     }
 
     public Time(String value) {
-        this.time_value = value;
+        this.value = value;
     }
 
     public Long getId() {
@@ -30,14 +28,6 @@ public class Time {
     }
 
     public String getValue() {
-        return time_value;
-    }
-
-    public boolean isDeleted() {
-        return deleted;
-    }
-
-    public void setDeleted(boolean deleted) {
-        this.deleted = deleted;
+        return value;
     }
 }
