@@ -14,12 +14,12 @@ public class Reservation {
     private String name;
     private String date;
 
-    @ManyToOne(fetch = FetchType.LAZY) // Time 엔티티와 다대일 관계
-    @JoinColumn(name = "time_id", nullable = false) // 외래 키 매핑
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "time_id")
     private Time time;
 
-    @ManyToOne(fetch = FetchType.LAZY) // Theme 엔티티와 다대일 관계
-    @JoinColumn(name = "theme_id", nullable = false) // 외래 키 매핑
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "theme_id")
     private Theme theme;
 
     public Reservation(Long id, String name, String date, Time time, Theme theme) {
@@ -38,7 +38,6 @@ public class Reservation {
     }
 
     public Reservation() {
-
     }
 
     public Long getId() {

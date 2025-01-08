@@ -22,7 +22,7 @@ public class ReservationService {
                 null,
                 reservationRequest.getName(),
                 reservationRequest.getDate(),
-                new Time(reservationRequest.getTime(), null),
+                new Time(reservationRequest.getTime(),null),
                 new Theme(reservationRequest.getTheme(), null, null)
         );
         Reservation savedReservation = reservationRepository.save(reservation);
@@ -41,14 +41,8 @@ public class ReservationService {
     }
 
     public List<ReservationResponse> findAll() {
-        return reservationRepository.findAllWithDetails().stream()
-                .map(it -> new ReservationResponse(
-                        it.getId(),
-                        it.getName(),
-                        it.getTheme().getName(),
-                        it.getDate(),
-                        it.getTime().getValue()
-                ))
-                .collect(Collectors.toList());
+        return reservationRepository.findAll().stream()
+                .map(it -> new ReservationResponse(it.getId(), it.getName(), it.getTheme().getName(), it.getDate(), it.getTime().getValue()))
+                .toList();
     }
 }
