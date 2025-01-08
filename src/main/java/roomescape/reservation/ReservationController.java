@@ -27,8 +27,7 @@ public class ReservationController {
     @GetMapping("/reservations-mine")
     public List<MyReservationResponse> myList(
             @Authentication Member member) {
-        List<ReservationResponse> reservationResponses = reservationService.findAllByMemberName(member.getName());
-        return MyReservationResponse.from(reservationResponses);
+        return reservationService.findMyReservationsByName(member.getName());
     }
 
     @PostMapping("/reservations")
@@ -46,7 +45,7 @@ public class ReservationController {
         return ResponseEntity.created(URI.create("/reservations/" + reservation.getId())).body(reservation);
     }
 
-    @DeleteMapping("/{id}")
+    @DeleteMapping("/reservations/{id}")
     public ResponseEntity delete(@PathVariable Long id) {
         reservationService.deleteById(id);
         return ResponseEntity.noContent().build();
