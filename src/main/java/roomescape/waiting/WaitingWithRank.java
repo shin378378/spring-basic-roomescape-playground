@@ -9,6 +9,10 @@ public class WaitingWithRank {
         this.rank = rank;
     }
 
+    public WaitingWithRank(Waiting waiting, int rank) {
+        this(waiting, (long) rank);
+    }
+
     public Waiting getWaiting() {
         return waiting;
     }
