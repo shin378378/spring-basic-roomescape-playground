@@ -9,21 +9,12 @@ public class WaitingWithRank {
         this.rank = rank;
     }
 
-    // Getter & Setter
     public Waiting getWaiting() {
         return waiting;
     }
 
-    public void setWaiting(Waiting waiting) {
-        this.waiting = waiting;
-    }
-
     public Long getRank() {
         return rank;
-    }
-
-    public void setRank(Long rank) {
-        this.rank = rank;
     }
 }
 
