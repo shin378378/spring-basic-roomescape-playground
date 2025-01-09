@@ -4,7 +4,6 @@ import roomescape.reservation.Reservation;
 import roomescape.waiting.WaitingWithRank;
 
 import java.util.List;
-import java.util.stream.Collectors;
 
 import static java.util.stream.Collectors.toList;
 

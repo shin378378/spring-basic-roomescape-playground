@@ -1,8 +1,9 @@
 package roomescape.waiting;
 
-import java.util.List;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
+
+import java.util.List;
 
 public interface WaitingRepository extends JpaRepository<Waiting, Long> {
 
@@ -16,6 +17,5 @@ public interface WaitingRepository extends JpaRepository<Waiting, Long> {
             "       AND w2.id < w.id)) " +
             "FROM Waiting w " +
             "WHERE w.member.id = :memberId")
-
     List<WaitingWithRank> findWaitingsWithRankByMemberId(Long memberId);
 }
