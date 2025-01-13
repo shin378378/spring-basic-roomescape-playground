@@ -170,4 +170,10 @@ public class MissionStepTest {
 
         assertThat(status).isEqualTo("1번째 예약대기");
     }
+
+//    @Test
+//    void 칠단계() {
+//        Component componentAnnotation = JwtUtils.class.getAnnotation(Component.class);
+//        assertThat(componentAnnotation).isNull();
+//    }
 }
