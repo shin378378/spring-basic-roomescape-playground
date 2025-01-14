@@ -5,8 +5,11 @@ import io.restassured.http.ContentType;
 import io.restassured.response.ExtractableResponse;
 import io.restassured.response.Response;
 import org.junit.jupiter.api.Test;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.stereotype.Component;
 import org.springframework.test.annotation.DirtiesContext;
+import roomescape.jwt.JwtUtils;
 import roomescape.reservation.dto.MyReservationResponse;
 import roomescape.reservation.dto.ReservationResponse;
 import roomescape.waiting.dto.WaitingResponse;
@@ -178,7 +181,14 @@ public class MissionStepTest {
 
     @Test
     void 칠단계() {
-        //Component componentAnnotation = JwtUtils.class.getAnnotation(Component.class);
-        //assertThat(componentAnnotation).isNull();
+        Component componentAnnotation = JwtUtils.class.getAnnotation(Component.class);
+        assertThat(componentAnnotation).isNull();
+    }
+
+    @Value("${jwt.secret}")
+    private String secretKey;
+    @Test
+    void 팔단계() {
+        assertThat(secretKey).isNotBlank();
     }
 }
