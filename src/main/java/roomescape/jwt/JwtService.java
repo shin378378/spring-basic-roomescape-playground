@@ -2,21 +2,22 @@ package roomescape.jwt;
 
 import io.jsonwebtoken.Claims;
 import org.springframework.stereotype.Service;
+import roomescape.jwt.JwtUtils;
 import roomescape.member.Member;
 import roomescape.member.MemberRepository;
 
 @Service
 public class JwtService {
-    private final JwtUtil jwtUtil;
+    private final JwtUtils jwtUtils;
     private final MemberRepository memberRepository;
 
-    public JwtService(JwtUtil jwtUtil, MemberRepository memberRepository) {
-        this.jwtUtil = jwtUtil;
+    public JwtService(JwtUtils jwtUtils, MemberRepository memberRepository) {
+        this.jwtUtils = jwtUtils;
         this.memberRepository = memberRepository;
     }
 
     public Long getUserIdFromToken(String token) {
-        Claims claims = jwtUtil.getClaimsFromToken(token);
+        Claims claims = jwtUtils.getClaimsFromToken(token);
         try {
             return Long.valueOf(claims.getSubject());
         } catch (Exception e) {

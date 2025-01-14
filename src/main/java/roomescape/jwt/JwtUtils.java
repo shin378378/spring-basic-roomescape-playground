@@ -11,7 +11,7 @@ import java.security.Key;
 import java.util.Date;
 
 @Component
-public class JwtUtil {
+public class JwtUtils {
     private static final long EXPIRATION_TIME = 86400000;
     @Value("${jwt.secret}")
     private String secretKey;

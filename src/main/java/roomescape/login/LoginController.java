@@ -4,7 +4,7 @@ import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import jwt.JwtService;
+import roomescape.jwt.JwtService;
 import roomescape.member.Member;
 
 import java.util.HashMap;
