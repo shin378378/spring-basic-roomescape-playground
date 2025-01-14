@@ -1,4 +1,4 @@
-package roomescape.util;
+package roomescape.auth;
 
 import jakarta.servlet.http.Cookie;
 import org.springframework.web.context.request.NativeWebRequest;

@@ -9,7 +9,6 @@ import org.springframework.web.method.support.HandlerMethodArgumentResolver;
 import org.springframework.web.method.support.ModelAndViewContainer;
 import roomescape.jwt.JwtService;
 import roomescape.member.Member;
-import roomescape.util.CookieUtil;
 
 @Component
 public class AuthenticationArgumentResolver implements HandlerMethodArgumentResolver {
