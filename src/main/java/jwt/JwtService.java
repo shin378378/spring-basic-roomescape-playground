@@ -1,4 +1,4 @@
-package roomescape.jwt;
+package jwt;
 
 import io.jsonwebtoken.Claims;
 import org.springframework.stereotype.Service;

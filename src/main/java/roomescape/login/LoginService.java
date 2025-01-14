@@ -1,7 +1,7 @@
 package roomescape.login;
 
 import jakarta.servlet.http.Cookie;
-import roomescape.jwt.JwtUtils;
+import jwt.JwtUtils;
 import org.springframework.stereotype.Service;
 import roomescape.member.Member;
 import roomescape.member.MemberRepository;
