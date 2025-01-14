@@ -2,7 +2,7 @@ package roomescape.login;
 
 import jakarta.servlet.http.Cookie;
 import org.springframework.stereotype.Service;
-import roomescape.jwt.JwtUtil;
+import jwt.JwtUtils;
 import roomescape.member.Member;
 import roomescape.member.MemberRepository;
 
@@ -11,11 +11,11 @@ import java.util.Map;
 
 @Service
 public class LoginService {
-    private final JwtUtil jwtUtil;
+    private final JwtUtils jwtUtils;
     private final MemberRepository memberRepository;
 
-    public LoginService(JwtUtil jwtUtil, MemberRepository memberRepository) {
-        this.jwtUtil = jwtUtil;
+    public LoginService(JwtUtils jwtUtils, MemberRepository memberRepository) {
+        this.jwtUtils = jwtUtils;
         this.memberRepository = memberRepository;
     }
 
@@ -25,7 +25,7 @@ public class LoginService {
             throw new IllegalArgumentException("Invalid email or password");
         }
 
-        return jwtUtil.generateToken(member.getId(), member.getRole());
+        return jwtUtils.generateToken(member.getId(), member.getRole());
     }
 
     public Cookie createAuthCookie(String token) {

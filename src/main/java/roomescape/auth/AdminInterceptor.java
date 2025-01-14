@@ -7,7 +7,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Component;
 import org.springframework.web.server.ResponseStatusException;
 import org.springframework.web.servlet.HandlerInterceptor;
-import roomescape.jwt.JwtService;
+import jwt.JwtService;
 import roomescape.member.Member;
 
 import java.util.Arrays;
