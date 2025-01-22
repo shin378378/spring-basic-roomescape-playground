@@ -34,12 +34,6 @@ public class JwtUtils {
                 .compact();
     }
 
-    public Role getRoleFromToken(String token) {
-        Claims claims = getClaimsFromToken(token);
-        return Role.valueOf(claims.get("role", String.class));
-    }
-
-
     public Claims getClaimsFromToken(String token) {
         try {
             Key key = generateKey();
