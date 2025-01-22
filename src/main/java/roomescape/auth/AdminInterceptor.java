@@ -9,6 +9,7 @@ import org.springframework.stereotype.Component;
 import org.springframework.web.server.ResponseStatusException;
 import org.springframework.web.servlet.HandlerInterceptor;
 import roomescape.member.Member;
+import roomescape.member.Role;
 
 import java.util.Arrays;
 
@@ -28,7 +29,7 @@ public class AdminInterceptor implements HandlerInterceptor {
         }
 
         Member member = jwtService.getMemberFromToken(token);
-        if (!"ADMIN".equals(member.getRole())) {
+        if (!Role.ADMIN.name().equals(member.getRole())) {
             throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, "사용자를 찾을 수 없습니다.");
         }
 
