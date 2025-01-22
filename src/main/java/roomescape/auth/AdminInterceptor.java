@@ -29,7 +29,7 @@ public class AdminInterceptor implements HandlerInterceptor {
         }
 
         Member member = jwtService.getMemberFromToken(token);
-        if (!Role.ADMIN.name().equals(member.getRole())) {
+        if (!Role.ADMIN.equals(member.getRole())) {
             throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, "사용자를 찾을 수 없습니다.");
         }
 

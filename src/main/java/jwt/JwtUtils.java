@@ -4,6 +4,7 @@ import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
 import org.springframework.beans.factory.annotation.Value;
+import roomescape.member.Role;
 
 import javax.crypto.spec.SecretKeySpec;
 import java.security.Key;
@@ -22,16 +23,22 @@ public class JwtUtils {
         return new SecretKeySpec(secretKey.getBytes(), SignatureAlgorithm.HS256.getJcaName());
     }
 
-    public String generateToken(Long userId, String role) {
+    public String generateToken(Long userId, Role role) {
         Key key = generateKey();
         return Jwts.builder()
                 .setSubject(String.valueOf(userId))
-                .claim("role", role)
+                .claim("role", role.name())
                 .setIssuedAt(new Date())
                 .setExpiration(new Date(System.currentTimeMillis() + EXPIRATION_TIME))
                 .signWith(key, SignatureAlgorithm.HS256)
                 .compact();
     }
+
+    public Role getRoleFromToken(String token) {
+        Claims claims = getClaimsFromToken(token);
+        return Role.valueOf(claims.get("role", String.class));
+    }
+
 
     public Claims getClaimsFromToken(String token) {
         try {
