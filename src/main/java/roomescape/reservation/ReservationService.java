@@ -13,6 +13,7 @@ import roomescape.time.TimeRepository;
 import roomescape.waiting.WaitingRepository;
 import roomescape.waiting.WaitingWithRank;
 
+import java.time.LocalDate;
 import java.util.List;
 
 @Service
@@ -60,7 +61,8 @@ public class ReservationService {
     }
 
     private void validateExistence(final ReservationRequest reservationRequest, final Theme theme, final Time time) {
-        reservationRepository.findByDateAndThemeIdAndTimeId(reservationRequest.getDate(), theme.getId(), time.getId())
+        LocalDate date = LocalDate.parse(reservationRequest.getDate());
+        reservationRepository.findByDateAndThemeIdAndTimeId(date, theme.getId(), time.getId())
                 .ifPresent(it -> {
                     throw new IllegalArgumentException("이미 예약된 시간입니다.");
                 });
