@@ -28,7 +28,7 @@ public class MyReservationResponse {
                 .map(it -> new MyReservationResponse(it.getId(),
                         it.getTheme().getName(),
                         it.getDate(),
-                        it.getTime().getValue(),
+                        it.getTime().getValueByString(),
                         "예약"))
                 .collect(toList());
 
@@ -36,7 +36,7 @@ public class MyReservationResponse {
                 .map(it -> new MyReservationResponse(it.getWaiting().getId(),
                         it.getWaiting().getTheme().getName(),
                         it.getWaiting().getDate(),
-                        it.getWaiting().getTime().getValue(),
+                        it.getWaiting().getTime().getValueByString(),
                         String.format("%d번째 예약대기", it.getRank() + 1)))
                 .forEach(myReservationResponses::add);
 

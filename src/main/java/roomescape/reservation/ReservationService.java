@@ -56,7 +56,7 @@ public class ReservationService {
                 reservationRequest.getName(),
                 reservation.getTheme().getName(),
                 reservation.getDate(),
-                reservation.getTime().getValue());
+                reservation.getTime().getValueByString());
     }
 
     private void validateExistence(final ReservationRequest reservationRequest, final Theme theme, final Time time) {
@@ -72,7 +72,7 @@ public class ReservationService {
 
     public List<ReservationResponse> findAll() {
         return reservationRepository.findAll().stream()
-                .map(it -> new ReservationResponse(it.getId(), it.getName(), it.getTheme().getName(), it.getDate(), it.getTime().getValue()))
+                .map(it -> new ReservationResponse(it.getId(), it.getName(), it.getTheme().getName(), it.getDate(), it.getTime().getValueByString()))
                 .toList();
     }
 
