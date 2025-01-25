@@ -1,5 +1,6 @@
 package roomescape.reservation;
 
+import org.springframework.data.jpa.repository.EntityGraph;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
@@ -13,6 +14,6 @@ public interface ReservationRepository extends JpaRepository<Reservation, Long> 
 
     List<Reservation> findByDateAndThemeId(LocalDate date, Long themeId);
 
+    @EntityGraph(attributePaths = {"theme", "time", "member"})
     List<Reservation> findByMemberId(Long memberId);
 }
-
