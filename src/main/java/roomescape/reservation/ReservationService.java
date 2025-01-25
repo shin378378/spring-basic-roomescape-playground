@@ -55,7 +55,7 @@ public class ReservationService {
         return new ReservationResponse(reservation.getId(),
                 reservationRequest.getName(),
                 reservation.getTheme().getName(),
-                reservation.getDate(),
+                reservation.getDateByString(),
                 reservation.getTime().getValueByString());
     }
 
@@ -72,7 +72,7 @@ public class ReservationService {
 
     public List<ReservationResponse> findAll() {
         return reservationRepository.findAll().stream()
-                .map(it -> new ReservationResponse(it.getId(), it.getName(), it.getTheme().getName(), it.getDate(), it.getTime().getValueByString()))
+                .map(it -> new ReservationResponse(it.getId(), it.getName(), it.getTheme().getName(), it.getDateByString(), it.getTime().getValueByString()))
                 .toList();
     }
 

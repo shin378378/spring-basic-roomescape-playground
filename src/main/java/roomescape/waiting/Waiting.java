@@ -5,6 +5,8 @@ import roomescape.member.Member;
 import roomescape.theme.Theme;
 import roomescape.time.Time;
 
+import java.time.LocalDate;
+
 @Entity
 public class Waiting {
 
@@ -12,7 +14,7 @@ public class Waiting {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    private String date;
+    private LocalDate date;
 
     @ManyToOne
     @JoinColumn(name = "time_id")
@@ -28,14 +30,17 @@ public class Waiting {
 
     public Waiting(final Long id, final String date, final Time time, final Theme theme, final Member member) {
         this.id = id;
-        this.date = date;
+        this.date = LocalDate.parse(date);
         this.time = time;
         this.theme = theme;
         this.member = member;
     }
 
     public Waiting(final String date, final Time time, final Theme theme, final Member member) {
-        this(null, date, time, theme, member);
+        this.date = LocalDate.parse(date);
+        this.time = time;
+        this.theme = theme;
+        this.member = member;
     }
 
     public Waiting() {
@@ -45,8 +50,8 @@ public class Waiting {
         return id;
     }
 
-    public String getDate() {
-        return date;
+    public String getDateByString() {
+        return date.toString();
     }
 
     public Time getTime() {

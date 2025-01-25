@@ -5,6 +5,8 @@ import roomescape.member.Member;
 import roomescape.theme.Theme;
 import roomescape.time.Time;
 
+import java.time.LocalDate;
+
 
 @Entity
 public class Reservation {
@@ -13,7 +15,7 @@ public class Reservation {
     private Long id;
 
     private String name;
-    private String date;
+    private LocalDate date;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "time_id")
@@ -30,14 +32,18 @@ public class Reservation {
     public Reservation(final Long id, final String name, final String date, final Time time, final Theme theme, final Member member) {
         this.id = id;
         this.name = name;
-        this.date = date;
+        this.date = LocalDate.parse(date);
         this.time = time;
         this.theme = theme;
         this.member = member;
     }
 
     public Reservation(final String name, final String date, final Time time, final Theme theme, final Member member) {
-        this(null, name, date, time, theme, member);
+        this.name = name;
+        this.date = LocalDate.parse(date);
+        this.time = time;
+        this.theme = theme;
+        this.member = member;
     }
 
     public Reservation() {
@@ -51,8 +57,8 @@ public class Reservation {
         return name;
     }
 
-    public String getDate() {
-        return date;
+    public String getDateByString() {
+        return date.toString();
     }
 
     public Time getTime() {

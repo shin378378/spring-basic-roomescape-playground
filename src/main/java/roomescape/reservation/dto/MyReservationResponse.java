@@ -27,7 +27,7 @@ public class MyReservationResponse {
         List<MyReservationResponse> myReservationResponses = reservations.stream()
                 .map(it -> new MyReservationResponse(it.getId(),
                         it.getTheme().getName(),
-                        it.getDate(),
+                        it.getDateByString(),
                         it.getTime().getValueByString(),
                         "예약"))
                 .collect(toList());
@@ -35,7 +35,7 @@ public class MyReservationResponse {
         waitingWithRanks.stream()
                 .map(it -> new MyReservationResponse(it.getWaiting().getId(),
                         it.getWaiting().getTheme().getName(),
-                        it.getWaiting().getDate(),
+                        it.getWaiting().getDateByString(),
                         it.getWaiting().getTime().getValueByString(),
                         String.format("%d번째 예약대기", it.getRank() + 1)))
                 .forEach(myReservationResponses::add);
