@@ -29,6 +29,10 @@ public class Time {
         return id;
     }
 
+    public LocalTime getValue() {
+        return value;
+    }
+
     public String getValueByString() {
         return value.toString();
     }
