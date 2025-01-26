@@ -9,6 +9,7 @@ import java.time.LocalDate;
 
 
 @Entity
+@Table(uniqueConstraints = {@UniqueConstraint(columnNames = {"date", "theme_id", "time_id"})})
 public class Reservation {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
