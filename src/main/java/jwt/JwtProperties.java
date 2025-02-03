@@ -6,7 +6,7 @@ import org.springframework.boot.context.properties.ConfigurationProperties;
 public class JwtProperties {
 
     private final String secret;
-    private final long EXPIRATION_TIME_MILLIS= 1000 * 60 * 60 * 24;
+    private final long EXPIRATION_TIME_MILLIS = 1000 * 60 * 60 * 24;
 
     public JwtProperties(String secret) {
         this.secret = secret;
