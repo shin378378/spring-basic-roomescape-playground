@@ -3,14 +3,12 @@ package jwt;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
-import org.springframework.stereotype.Component;
 import roomescape.member.Role;
 
 import javax.crypto.spec.SecretKeySpec;
 import java.security.Key;
 import java.util.Date;
 
-@Component
 public class JwtUtils {
     private final JwtProperties jwtProperties;
 
