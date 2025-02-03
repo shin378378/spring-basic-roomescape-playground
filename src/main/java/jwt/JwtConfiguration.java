@@ -1,17 +1,9 @@
 package jwt;
 
-import org.springframework.beans.factory.annotation.Value;
-import org.springframework.context.annotation.Bean;
+import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.context.annotation.Configuration;
 
 @Configuration
+@EnableConfigurationProperties(JwtProperties.class)
 public class JwtConfiguration {
-
-    @Value("${jwt.secret}")
-    private String secretKey;
-
-    @Bean
-    public JwtUtils jwtUtils() {
-        return new JwtUtils();
-    }
 }

@@ -3,24 +3,23 @@ package jwt;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
-import org.springframework.beans.factory.annotation.Value;
+import org.springframework.stereotype.Component;
 import roomescape.member.Role;
 
 import javax.crypto.spec.SecretKeySpec;
 import java.security.Key;
 import java.util.Date;
 
+@Component
 public class JwtUtils {
-    private static final long EXPIRATION_TIME = 86400000;
-    private String secretKey;
+    private final JwtProperties jwtProperties;
 
-    @Value("${jwt.secret}")
-    public void setSecretKey(String secretKey) {
-        this.secretKey = secretKey;
+    public JwtUtils(JwtProperties jwtProperties) {
+        this.jwtProperties = jwtProperties;
     }
 
     private Key generateKey() {
-        return new SecretKeySpec(secretKey.getBytes(), SignatureAlgorithm.HS256.getJcaName());
+        return new SecretKeySpec(jwtProperties.getSecret().getBytes(), SignatureAlgorithm.HS256.getJcaName());
     }
 
     public String generateToken(Long userId, Role role) {
@@ -29,7 +28,7 @@ public class JwtUtils {
                 .setSubject(String.valueOf(userId))
                 .claim("role", role.name())
                 .setIssuedAt(new Date())
-                .setExpiration(new Date(System.currentTimeMillis() + EXPIRATION_TIME))
+                .setExpiration(new Date(System.currentTimeMillis() + jwtProperties.getEXPIRATION_TIME_MILLIS()))
                 .signWith(key, SignatureAlgorithm.HS256)
                 .compact();
     }

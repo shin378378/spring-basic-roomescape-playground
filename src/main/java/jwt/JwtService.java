@@ -26,10 +26,7 @@ public class JwtService {
 
     public Member getMemberFromToken(String token) {
         Long userId = getUserIdFromToken(token);
-        Member member = memberRepository.findById(userId).get();
-        if (member == null) {
-            throw new IllegalArgumentException("토큰으로부터 유저를 찾을 수 없습니다.");
-        }
-        return member;
+        return memberRepository.findById(userId)
+                .orElseThrow(() -> new IllegalArgumentException("토큰으로부터 유저를 찾을 수 없습니다."));
     }
 }
