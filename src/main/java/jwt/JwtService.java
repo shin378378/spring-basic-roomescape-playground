@@ -1,9 +1,11 @@
 package jwt;
 
 import io.jsonwebtoken.Claims;
+import org.springframework.stereotype.Service;
 import roomescape.member.Member;
 import roomescape.member.MemberRepository;
 
+@Service
 public class JwtService {
     private final JwtUtils jwtUtils;
     private final MemberRepository memberRepository;
