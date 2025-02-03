@@ -1,24 +1,24 @@
 package roomescape.auth;
 
+import io.jsonwebtoken.Claims;
 import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
-import jwt.JwtService;
+import jwt.JwtUtils;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Component;
 import org.springframework.web.server.ResponseStatusException;
 import org.springframework.web.servlet.HandlerInterceptor;
-import roomescape.member.Member;
 import roomescape.member.Role;
 
 import java.util.Arrays;
 
 @Component
 public class AdminInterceptor implements HandlerInterceptor {
-    private final JwtService jwtService;
+    private final JwtUtils jwtUtils;
 
-    public AdminInterceptor(JwtService jwtService) {
-        this.jwtService = jwtService;
+    public AdminInterceptor(JwtUtils jwtUtils) {
+        this.jwtUtils = jwtUtils;
     }
 
     @Override
@@ -28,11 +28,12 @@ public class AdminInterceptor implements HandlerInterceptor {
             throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, "토큰을 찾을 수 없습니다.");
         }
 
-        Member member = jwtService.getMemberFromToken(token);
-        if (!Role.ADMIN.equals(member.getRole())) {
-            throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, "사용자를 찾을 수 없습니다.");
-        }
+        Claims claims = jwtUtils.getClaimsFromToken(token);
+        String role = claims.get("role", String.class);
 
+        if (!Role.ADMIN.name().equals(role)) {
+            throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, "권한이 없습니다.");
+        }
         return true;
     }
 
